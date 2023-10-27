@@ -12,3 +12,12 @@ CREATE TRIGGER AtualizaNome_cliente
 AFTER UPDATE ON Clientes
 FOR EACH ROW
 INSERT INTO Auditoria (nome de cliente atualizou) VALUES (CONCAT('Antigo nome: Peter Parker ', OLD.nome, ' | Novo nome: Homem Aranha', NEW.nome));
+
+CREATE TRIGGER ImpedeNome_vazio
+BEFORE UPDATE ON Clientes
+FOR EACH ROW
+  IF NEW.nome IS NULL OR NEW.nome = '' THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'Nome não podera ser vazio ou NULL';
+  END IF;
+END;
