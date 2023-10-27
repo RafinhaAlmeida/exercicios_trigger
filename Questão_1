@@ -1,4 +1,0 @@
-CREATE TRIGGER cliente_auditoria
-AFTER INSERT ON Cliente
-FOR EACH ROW
-INSERT INTO Auditoria (um novo cliente foi inserido) VALUES (CONCAT(' cliente inserido ', NOW()));
