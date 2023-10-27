@@ -21,3 +21,16 @@ FOR EACH ROW
     SET MESSAGE_TEXT = 'Nome não podera ser vazio ou NULL';
   END IF;
 END;
+
+CREATE TRIGGER atualiza_estoque
+AFTER INSERT ON Pedidos
+FOR EACH ROW
+BEGIN
+  UPDATE Produtos
+  SET estoque = estoque - 1
+  WHERE id = NEW.produto_id;
+
+  IF (SELECT estoque FROM Produtos WHERE id = NEW.produto_id) < 5 THEN
+    INSERT INTO Auditoria (baixo estoque) VALUES (CONCAT('Estoque baixo', NEW.produto_id, ' em ', NOW()));
+  END IF;
+END;
