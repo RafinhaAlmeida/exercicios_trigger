@@ -7,3 +7,8 @@ CREATE TRIGGER ExclusaoCliente_auditoria
 BEFORE DELETE ON Clientes
 FOR EACH ROW
 INSERT INTO Auditoria (cliente vai ser excluído) VALUES (CONCAT('exclusão de cliente', NOW()));
+
+CREATE TRIGGER AtualizaNome_cliente
+AFTER UPDATE ON Clientes
+FOR EACH ROW
+INSERT INTO Auditoria (nome de cliente atualizou) VALUES (CONCAT('Antigo nome: Peter Parker ', OLD.nome, ' | Novo nome: Homem Aranha', NEW.nome));
